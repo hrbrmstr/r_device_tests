@@ -1,0 +1,125 @@
+---
+title: "PDF Device Tests"
+author: "hrbrmstr"
+date: "May 25, 2016"
+output:
+  html_document:
+    keep_md: yes
+    self_contained: no
+  pdf_document:
+    keep_tex: yes
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+# I had to remove fig.retina=2 because of 
+# ! Illegal unit of measure (pt inserted).
+# <to be read again> 
+#                    \relax 
+# l.154 ...h=468]{pdf_test_files/figure-latex/png-1}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+
+# needed to remove svg from pdf output
+# http://stackoverflow.com/questions/35144130/in-knitr-how-can-i-test-for-if-the-output-will-be-pdf-or-word/35149103
+getOutputFormat <- function() {
+  output <- rmarkdown:::parse_yaml_front_matter(
+    readLines(knitr::current_input())
+    )$output
+  if (is.list(output)){
+    return(names(output)[1])
+  } else {
+    return(output[1])
+  }
+}
+```
+
+
+```{r libs, echo=TRUE}
+library(ggplot2)
+library(extrafont)
+library(svglite)
+
+loadfonts()
+
+gg <- ggplot(mtcars, aes(wt, mpg))
+gg <- gg + geom_point()
+gg <- gg + geom_label(aes(x=3.5, y=27.5, label="The quick brown fox jumped\nover the lazy dog."),
+                      family="Arial Narrow", fontface="italic", size=4, label.size=0)
+gg <- gg + labs(title="Yet Another mtcars Plot",
+                subtitle="We really need to get a new data set",
+                caption="Brought to you by #rstats")
+gg <- gg + theme_bw(base_family = "Arial Narrow")
+gg <- gg + theme(axis.title=element_text(family="Arial Narrow", face="italic"))
+gg <- gg + theme(plot.title=element_text(family="Arial Narrow", face="bold"))
+gg <- gg + theme(plot.subtitle=element_text(family="Arial Narrow", face="italic"))
+gg <- gg + theme(plot.caption=element_text(family="Arial Narrow", face="plain"))
+```
+
+### PNG device
+
+```{r png, dev=c("png"), echo=FALSE}
+gg
+```
+
+### JPEG device
+
+```{r jpeg, dev=c("jpeg"), echo=FALSE}
+gg
+```
+
+### TIFF device
+
+```{r tiff, dev=c("tiff"), echo=FALSE}
+# error when producing a PDF:
+# error: pandoc.exe: Invalid bit depth (255)
+if(getOutputFormat() != 'pdf_document') {
+  gg
+}
+```
+
+### SVG device
+
+```{r svg, dev=c("svg"), echo=FALSE}
+# SVG can't be embedded in PDF
+if(getOutputFormat() != 'pdf_document') {
+  gg
+}
+```
+
+### SVGLITE device
+
+```{r svglite, dev=c("svglite"), echo=FALSE}
+# SVG can't be embedded in PDF
+if(getOutputFormat() != 'pdf_document') {
+  gg
+}
+```
+
+### PDF device
+
+```{r pdf, dev=c("pdf"), echo=FALSE}
+# not possible, always produces an error:
+# Error in grid.Call.graphics(L_text, as.graphicsAnnot(x$label), x$x, x$y,  : 
+#  invalid font type
+# Calls: <Anonymous> ... drawDetails -> drawDetails.text -> grid.Call.graphics
+#gg
+```
+
+### CAIRO_PDF device
+
+```{r cairo_pdf, dev=c("cairo_pdf"), echo=FALSE}
+gg
+```
+
+### CAIROPDF device
+
+```{r CairoPDF, dev=c("CairoPDF"), echo=FALSE}
+gg
+```
+
+### QUARTZ device
+
+```{r quartz, dev=c("quartz_pdf"), echo=FALSE}
+# no quartz on windows
+#gg
+```
