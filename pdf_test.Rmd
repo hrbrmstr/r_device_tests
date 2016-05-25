@@ -1,0 +1,87 @@
+---
+title: "PDF Device Tests"
+author: "hrbrmstr"
+date: "May 25, 2016"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.retina=2, message=FALSE, warning=FALSE)
+```
+
+```{r libs, echo=TRUE}
+library(ggplot2)
+library(extrafont)
+library(svglite)
+
+loadfonts()
+
+gg <- ggplot(mtcars, aes(wt, mpg))
+gg <- gg + geom_point()
+gg <- gg + geom_label(aes(x=3.5, y=27.5, label="The quick brown fox jumped\nover the lazy dog."),
+                      family="Arial Narrow", fontface="italic", size=4, label.size=0)
+gg <- gg + labs(title="Yet Another mtcars Plot",
+                subtitle="We really need to get a new data set",
+                caption="Brought to you by #rstats")
+gg <- gg + theme_bw(base_family = "Arial Narrow")
+gg <- gg + theme(axis.title=element_text(family="Arial Narrow", face="italic"))
+gg <- gg + theme(plot.title=element_text(family="Arial Narrow", face="bold"))
+gg <- gg + theme(plot.subtitle=element_text(family="Arial Narrow", face="italic"))
+gg <- gg + theme(plot.caption=element_text(family="Arial Narrow", face="plain"))
+```
+
+### PNG device
+
+```{r png, dev=c("png"), echo=FALSE}
+gg
+```
+
+### JPEG device
+
+```{r jpeg, dev=c("jpeg"), echo=FALSE}
+gg
+```
+
+### TIFF device
+
+```{r tiff, dev=c("tiff"), echo=FALSE}
+gg
+```
+
+### SVG device
+
+```{r svg, dev=c("svg"), echo=FALSE}
+gg
+```
+
+### SVGLITE device
+
+```{r svglite, dev=c("svglite"), echo=FALSE}
+gg
+```
+
+### PDF device
+
+```{r pdf, dev=c("pdf"), echo=FALSE}
+gg
+```
+
+### CAIRO_PDF device
+
+```{r cairo_pdf, dev=c("cairo_pdf"), echo=FALSE}
+gg
+```
+
+### CAIROPDF device
+
+```{r CairoPDF, dev=c("CairoPDF"), echo=FALSE}
+gg
+```
+
+### QUARTZ device
+
+```{r quartz, dev=c("quartz_pdf"), echo=FALSE}
+gg
+```
