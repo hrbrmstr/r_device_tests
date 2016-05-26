@@ -117,6 +117,15 @@ gg
 gg
 ```
 
+### WIN.METAFILE device
+
+```{r winmeta, dev=c("win.metafile"), echo=FALSE}
+if(getOutputFormat() != 'pdf_document') {
+  gg
+}
+```
+
+
 ### QUARTZ device
 
 ```{r quartz, dev=c("quartz_pdf"), echo=FALSE}

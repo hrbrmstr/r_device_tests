@@ -59,6 +59,11 @@ gg <- gg + theme(plot.caption=element_text(family="Arial Narrow", face="plain"))
 
 ![](pdf_test_files/figure-html/CairoPDF-1.pdf)<!-- -->
 
+### WIN.METAFILE device
+
+![](pdf_test_files/figure-html/winmeta-1.wmf)<!-- -->
+
+
 ### QUARTZ device
 
 
